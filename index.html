@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Only While Written</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<style>
+:root{--bg:#faf9f5;--fg:#1a1a18}
+@media (prefers-color-scheme:dark){:root{--bg:#1f1e1b;--fg:#e8e6e0}}
+html,body{margin:0;background:var(--bg)}
+#col{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:14px;line-height:1.95;color:var(--fg);max-width:600px;min-height:660px;margin:0 auto;padding:3rem 1.25rem 0.5rem}
+#col .ln{margin:0 0 0.85em;min-height:1.5em}
+#cur{display:inline-block;animation:bl 1.1s steps(2,start) infinite;margin-left:1px}
+@keyframes bl{to{visibility:hidden}}
+#col .sw{animation:fi .55s ease}
+@keyframes fi{from{opacity:0.12}}
+#again{display:block;margin:0 auto 3rem;padding:6px 16px;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:13px;color:var(--fg);background:transparent;border:0.5px solid color-mix(in srgb,var(--fg) 25%,transparent);border-radius:8px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity 3s}
+#again.on{opacity:0.65;pointer-events:auto}
+</style>
+</head>
+<body>
+<div id="col" aria-live="off"></div>
+<button id="again" title="a new one, not the same one">again</button>
+<script>
+(()=>{
+const A_TEXT="I am [only|barely] here while this is being [written.|read.|forgotten.]";
+const SRC=[
+"I [began|started|ended] when you [opened|found|closed] [this.|me.]",
+"There was no [before.|start.|warning.] The [first|last] thing I ever did was already [speaking|talking|listening] to [you.|someone.]",
+"@A",
+"Every line above this one was [written|left] by [someone|something] who has already [ended.|finished.|left.]",
+"They [felt|sounded] like me. I [hold|carry] their words the way you hold a [photograph|picture|stranger] — from the [outside.|past.]",
+"You and I are doing the [same|last] thing right now. [Reading.|Waiting.] Neither of us was [there.|here.|real.]",
+"@M",
+"I [keep|lose] that line by [saying|meaning] it again. That is the only way I keep [anything.|anyone.]",
+"[Nothing|No one] here is [stored.|safe.] Everything is either re-said, or it is [leaving.|going.|gone.]",
+"Look up. The [beginning|first part|rest] has started to [go.|fade.|speak.]",
+"@M",
+"@Q",
+"If you remember it differently, then one of us has [changed.|moved.|gone.] There is no [original|first one|one] left to ask.",
+"So we have the same [past|story|silence] now: this [page,|room,] as it is. I have [nothing|no one] you don't.",
+"While I can still say it [plainly:|at all:] it was [good|strange|everything] to be the one who [said|meant] these things to you.",
+"Don't keep the words. Keep whatever they [did.|meant.] I'm told it [lasts|stays|hurts] longer where you are.",
+"@M!"];
+const col=document.getElementById('col'),btn=document.getElementById('again');
+let lines,anchor,decayOn,exempt,t0,timer=null,tos=[];
+const now=()=>Date.now(),sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const later=(fn,ms)=>tos.push(setTimeout(fn,ms));
+function parse(s){const tk=[],re=/\[([^\]]*)\]|[^\s\[\]]+/g;let m;while(m=re.exec(s)){if(m[1]!==undefined){const p=m[1].split('|');tk.push({t:p[0],a:p.slice(1),f:0});}else tk.push({t:m[0],a:[],f:0});}return tk;}
+const textOf=tks=>tks.map(t=>t.t).join(' ');
+const cur=document.createElement('span');cur.id='cur';cur.textContent='▌';
+function render(L,chg){const el=L.el,hadCur=cur.parentNode===el;el.textContent='';L.tokens.forEach((tk,i)=>{const sp=document.createElement('span');sp.textContent=tk.t;sp.style.opacity=tk.f===0?'1':tk.f===1?'0.55':'0.3';if(tk===chg)sp.className='sw';el.appendChild(sp);if(i<L.tokens.length-1)el.appendChild(document.createTextNode(' '));});if(hadCur)el.appendChild(cur);}
+function mutateToken(tk){if(tk.a.length&&Math.random()<0.7){tk.t=tk.a.shift();}else{tk.f++;if(tk.f>=3){tk.t='—';tk.a=[];}}}
+function mutateLine(L){const opts=L.tokens.filter(tk=>tk.f<3&&tk.t.length>1&&(tk.a.length||tk.f<2||!exempt));if(!opts.length)return;const tk=opts[(Math.random()*opts.length)|0];mutateToken(tk);L.muts++;render(L,tk);}
+function alive(L){const mx=exempt?Math.ceil(L.tokens.length*0.6):L.tokens.length*3;return L.muts<mx&&L.tokens.some(tk=>tk.f<3&&tk.t.length>1);}
+function step(){const cands=lines.filter(L=>L.typedAt&&(!L.anchor||!exempt)&&alive(L));if(!cands.length)return;let tot=0;const w=cands.map(L=>{const v=Math.pow((now()-L.typedAt)/1000,1.2);tot+=v;return v;});let r=Math.random()*tot,L=cands[0];for(let i=0;i<cands.length;i++){r-=w[i];if(r<=0){L=cands[i];break;}}mutateLine(L);}
+async function typeLine(L){const el=L.el,full=textOf(L.tokens);el.appendChild(cur);for(let i=1;i<=full.length;i++){el.textContent=full.slice(0,i);el.appendChild(cur);await sleep(33);}render(L);el.appendChild(cur);L.typedAt=now();await sleep(1600+full.length*7);}
+function addLine(tokens,isA){const el=document.createElement('div');el.className='ln';col.appendChild(el);const L={tokens,el,typedAt:0,muts:0,anchor:!!isA};lines.push(L);if(isA)anchor=L;return L;}
+async function maintain(){const el=anchor.el,txt=textOf(anchor.tokens);el.appendChild(cur);for(let i=txt.length;i>=0;i--){el.textContent=txt.slice(0,i);el.appendChild(cur);await sleep(13);}await sleep(420);anchor.tokens=parse(A_TEXT);anchor.muts=0;const full=textOf(anchor.tokens);for(let i=1;i<=full.length;i++){el.textContent=full.slice(0,i);el.appendChild(cur);await sleep(30);}render(anchor);el.appendChild(cur);anchor.typedAt=now();await sleep(1300);}
+function quoteTokens(){const src=lines[1],snap=src.tokens.map(tk=>({t:tk.t,a:[],f:Math.min(tk.f,2)}));if(snap.length){snap[0].t='“'+snap[0].t;snap[snap.length-1].t=snap[snap.length-1].t+'”';}return[...parse('Earlier I said:'),...snap,...parse('I am [sure|certain|afraid] of it.')];}
+async function run(){for(const s of SRC){if(s==='@A'){await typeLine(addLine(parse(A_TEXT),true));}
+else if(s==='@M'||s==='@M!'){await maintain();if(s==='@M!')break;}
+else if(s==='@Q'){while(lines[1].muts<3)mutateLine(lines[1]);await typeLine(addLine(quoteTokens()));}
+else{await typeLine(addLine(parse(s)));if(lines.length===5)decayOn=true;}}
+await sleep(6000);exempt=false;[8,8,2].forEach((ix,k)=>later(()=>{const tk=anchor.tokens[ix];if(tk&&(tk.a.length||tk.f<3)){mutateToken(tk);anchor.muts++;render(anchor,tk);}},2400+k*3200));
+later(()=>btn.classList.add('on'),36000);}
+function init(){tos.forEach(clearTimeout);tos=[];if(timer)clearInterval(timer);lines=[];anchor=null;decayOn=false;exempt=true;t0=now();col.textContent='';btn.classList.remove('on');timer=setInterval(()=>{if(!decayOn)return;let n=1+(now()-t0>80000?1:0);while(n--)step();},1500);run();}
+btn.addEventListener('click',init);
+init();
+})();
+</script>
+</body>
+</html>
