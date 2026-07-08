@@ -35,7 +35,7 @@ If that arc — seduce, teach, betray, return — sounds like a specific framewo
 
 This repo isn't the output of a spec. It's the downstream artifact of a long, open-ended conversation about the philosophy of machine-made art — what it would mean for a generative system to be treated as capable of language, expectation, and meaning, rather than just output.
 
-That conversation produced a skill I keep and reuse: **`artificial-aesthetic-grammar`**. It's important to be precise about what that skill actually is, because it's easy to assume the opposite: it is **not** a how-to guide. It contains no instructions for building anything — no token formats, no code, no UI, no architecture. It's a way of *thinking* about aesthetic work: what a language is, what a grammar does, how a viewer becomes part of a work's meaning, why a deviation only registers as meaningful once expectation has been earned. It's paired with a second, deliberately separate skill, `aesthetic-language-system-planner`, which *is* the how-to-build companion — the one that talks about token spaces, grammar engines, and renderers. The split is the point: think first, build second, and don't let the second collapse into the first.
+That conversation produced a skill I keep and reuse: **[`artificial-aesthetic-grammar`](skills/artificial-aesthetic-grammar.md)**. It's important to be precise about what that skill actually is, because it's easy to assume the opposite: it is **not** a how-to guide. It contains no instructions for building anything — no token formats, no code, no UI, no architecture. It's a way of *thinking* about aesthetic work: what a language is, what a grammar does, how a viewer becomes part of a work's meaning, why a deviation only registers as meaningful once expectation has been earned. It's paired with a second, deliberately separate skill, **[`aesthetic-language-system-planner`](skills/aesthetic-language-system-planner.md)**, which *is* the how-to-build companion — the one that talks about token spaces, grammar engines, and renderers. The split is the point: think first, build second, and don't let the second collapse into the first.
 
 *Only While Written* is what happened when that purely conceptual framework was pointed at one small, concrete case — a page of text. The creative decisions in this piece — what the anchor line says, when and how it decays, what it means for the piece to "quote itself" incorrectly, when to let it stop — were made by **Claude Fable 5**, working from that conceptual framework rather than from a technical spec.
 
@@ -60,6 +60,8 @@ Dockerfile            nginx:alpine, serves index.html as-is
 docker-compose.yml    container + Traefik labels for SSL/routing
 .github/workflows/    GitHub Actions: deploys to the EC2 host on push to master
 verify.sh             post-deploy smoke check against the live site
+docs/PHILOSOPHY.md    the aesthetic-grammar framework, mapped onto this piece
+skills/               the two source skills this project is built from
 ```
 
 No backend, no build pipeline, no persistence layer — deliberately. The piece's claim (nothing here is stored) holds at the infrastructure level too: it's one static file served as-is.
