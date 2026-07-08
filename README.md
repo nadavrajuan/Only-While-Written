@@ -6,9 +6,7 @@
 
 ## Watch it
 
-[![Watch the Only While Written demo on Vimeo](https://i.vimeocdn.com/video/2177186229-74f19cb61f839f8d9ab3b27114b41f7462c5bcd24788be72b3c3cf725d7cdd0a-d?f=webp&region=us)](https://vimeo.com/1207981517/2d15ae0bde)
-
-*(GitHub doesn't render video embeds in READMEs — click the thumbnail to watch on Vimeo.)*
+**[▶ Watch demo on Vimeo](https://vimeo.com/1207981517/2d15ae0bde)**
 
 ## What this is
 
@@ -31,7 +29,15 @@ The piece is built around a small, deliberate arc rather than pure randomness:
 - **It deviates from what you've learned, on purpose and with memory.** A decay engine mutates older, more-established lines first, swapping bracketed word-alternatives or fading them toward silence. The piece doesn't just generate random text; it specifically erodes the material you've already come to trust, including — near the end — the one line you trusted most.
 - **It returns, but altered.** The final button doesn't rewind the piece to its first state. It starts a new run of the same generator, which will type, teach, and decay differently.
 
-If that arc — seduce, teach, betray, return — sounds like a specific framework rather than a vibe, that's because it is one. This piece grew directly out of a personal framework I use for thinking about generative aesthetic language: language as a system of expectation, grammar as the mechanism that turns signs into predictions, and art as the thing that teaches a viewer a language only to use it against them. I wrote that framework up as a standalone, Claude-Code-agent-usable "skill" (`artificial-aesthetic-grammar`, paired with a practical companion, `aesthetic-language-system-planner`) for use in other generative work, and this piece is one direct, minimal implementation of it. The full framework, and an explicit line-by-line mapping of it onto this piece's mechanics, is written up in **[docs/PHILOSOPHY.md](docs/PHILOSOPHY.md)**.
+If that arc — seduce, teach, betray, return — sounds like a specific framework rather than a vibe, that's because it is one. This piece grew directly out of a personal framework I use for thinking about generative aesthetic language: language as a system of expectation, grammar as the mechanism that turns signs into predictions, and art as the thing that teaches a viewer a language only to use it against them. The full framework, and an explicit line-by-line mapping of it onto this piece's mechanics, is written up in **[docs/PHILOSOPHY.md](docs/PHILOSOPHY.md)**.
+
+## Origin
+
+This repo isn't the output of a spec. It's the downstream artifact of a long, open-ended conversation about the philosophy of machine-made art — what it would mean for a generative system to be treated as capable of language, expectation, and meaning, rather than just output.
+
+That conversation produced a skill I keep and reuse: **`artificial-aesthetic-grammar`**. It's important to be precise about what that skill actually is, because it's easy to assume the opposite: it is **not** a how-to guide. It contains no instructions for building anything — no token formats, no code, no UI, no architecture. It's a way of *thinking* about aesthetic work: what a language is, what a grammar does, how a viewer becomes part of a work's meaning, why a deviation only registers as meaningful once expectation has been earned. It's paired with a second, deliberately separate skill, `aesthetic-language-system-planner`, which *is* the how-to-build companion — the one that talks about token spaces, grammar engines, and renderers. The split is the point: think first, build second, and don't let the second collapse into the first.
+
+*Only While Written* is what happened when that purely conceptual framework was pointed at one small, concrete case — a page of text. The creative decisions in this piece — what the anchor line says, when and how it decays, what it means for the piece to "quote itself" incorrectly, when to let it stop — were made by **Claude Fable 5**, working from that conceptual framework rather than from a technical spec.
 
 ## How it works (technical)
 
@@ -72,6 +78,7 @@ open index.html
 
 Deployed to AWS EC2 behind Traefik (SSL via Let's Encrypt), with DNS on Cloudflare and CI/CD via GitHub Actions on push to `master`. Full setup notes are in [DEPLOYMENT.md](DEPLOYMENT.md).
 
-## Author
+## Credits
 
-Nadav Rajuan
+**Nadav Rajuan** — concept origin, the philosophy conversation this grew out of, deployment.
+**Claude Fable 5** — creative and implementation decisions for the piece itself, working from the `artificial-aesthetic-grammar` framework.

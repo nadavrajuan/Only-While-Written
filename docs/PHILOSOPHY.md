@@ -1,8 +1,10 @@
 # The Idea Behind It
 
-*Only While Written* is a small piece of software art, but the thinking behind it isn't really about software. It comes out of a framework I use — independent of this project — for reasoning about **artificial aesthetic language**: how a system of signs can become a language, how a language teaches a viewer to expect, and how art uses that expectation against the viewer to produce meaning.
+*Only While Written* is a small piece of software art, but the thinking behind it isn't really about software. It's downstream of a long, open-ended conversation about the philosophy of machine-made art — not "how do we generate content," but what it would mean for a generative system to be treated as capable of language, expectation, and meaning at all.
 
-This document is that framework, written for a general reader rather than for an AI agent. It's adapted from two private working notes I keep (`artificial-aesthetic-grammar` and `aesthetic-language-system-planner`) that I use whenever I'm designing generative or aesthetic systems. If you only want the short version, read [the README](../README.md#the-idea); this is the long version.
+That conversation produced a working framework I keep and reuse, `artificial-aesthetic-grammar`, for reasoning about **artificial aesthetic language**: how a system of signs can become a language, how a language teaches a viewer to expect, and how art uses that expectation against the viewer to produce meaning. It's worth being precise about what this framework *is*: it is not an implementation guide. It contains no instructions for building anything — no token formats, no code, no rendering, no architecture. It's a way of thinking about aesthetic work, meant to be applied *before* any technical decision gets made. There's a deliberately separate companion, `aesthetic-language-system-planner`, that covers the practical, how-to-build side (token spaces, grammar engines, dramaturgy, renderers) — the split exists so the conceptual framework doesn't collapse into a spec.
+
+This document is the conceptual framework, written for a general reader rather than for an AI agent. If you only want the short version, read [the README](../README.md#the-idea); this is the long version. The creative decisions in the piece itself — what the anchor line says, how and when it decays, what it means for the piece to misquote itself — were made by Claude Fable 5, working from this framework rather than from a spec.
 
 ## Language as a system of expectations
 
